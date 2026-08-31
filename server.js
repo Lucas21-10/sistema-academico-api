@@ -1,8 +1,8 @@
 const express = require('express');
+const app = express();
 
 const disciplinaRoutes = require('./src/routes/disciplinaRoutes');
 
-const app = express();
 
 const PORT = 8080;
 
