@@ -1,0 +1,25 @@
+name: Workflow de Commits
+
+on:
+  push:
+
+jobs:
+  testes:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clonar repositório
+        uses: actions/checkout@v4
+
+      - name: Trocar para a branch do commit
+        run: git switch ${{ github.ref_name }}
+
+      - name: Instalar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+    
+      - name: Instalar dependências
+        run: npm ci
+    
+      - name: Executar testes
+        run: npm test
