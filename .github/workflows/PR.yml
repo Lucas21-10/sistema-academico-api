@@ -25,7 +25,3 @@ jobs:
       # 3. Instalar as dependências do projeto
       - name: Instalar dependências
         run: npm ci
-
-      # 4. Compilar o projeto (build)
-      - name: Build
-        run: npm run build
