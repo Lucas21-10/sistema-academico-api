@@ -1,6 +1,7 @@
 const requisicao = require('supertest');
 const aplicacao = require('../server');
 
+//teste da rota GET
 describe('GET /api/disciplinas', () => {
     test('deve retornar a lista de disciplinas', async () => {
         const resposta = await requisicao(aplicacao)
