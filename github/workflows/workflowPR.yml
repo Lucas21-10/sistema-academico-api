@@ -1,0 +1,31 @@
+name: CI - pull request
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Clonar o repositório e trocar para a branch específica
+      - name: Checkout do código
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      # 2. Instalar o interpretador (Node.js)
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24.15.0'
+          cache: 'npm'
+
+      # 3. Instalar as dependências do projeto
+      - name: Instalar dependências
+        run: npm ci
+
+      # 4. Compilar o projeto (build)
+      - name: Build
+        run: npm run build
