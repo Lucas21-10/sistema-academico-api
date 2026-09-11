@@ -8,4 +8,4 @@ API DO SISTEMA
 
 # Workflow
 
-Optamos pelo Github Flow, porque o projeto é pequeno e não tem ciclos de realese formais, ele favorece entregas contínuas e a main sempre fica estável, e cada nova funcionalidade nasce em um branch curta.
+Optamos pelo Github Flow, porque o projeto é pequeno e não tem ciclos de realese formais, ele favorece entregas contínuas e a main sempre fica estável, e cada nova funcionalidade nasce em um branch curta..
