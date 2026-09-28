@@ -1,7 +1,7 @@
 const requisicao = require('supertest');
 const aplicacao = require('../server');
 
-//teste da rota GET
+// teste da rota GET
 describe('GET /api/disciplinas', () => {
     test('deve retornar a lista de disciplinas', async () => {
         const resposta = await requisicao(aplicacao)
@@ -31,5 +31,22 @@ describe('POST /api/adicionarDisciplina', () => {
         expect(resposta.body.codigo).toBe('PW');
         expect(resposta.body.cargaHoraria).toBe(60);
         expect(resposta.body.periodo).toBe(3);
+    });
+});
+
+describe('DELETE /api/disciplinas/:id', () => {
+    test('deve remover uma disciplina existente', async () => {
+        const resposta = await requisicao(aplicacao)
+            .delete('/api/disciplinas/3');
+
+        expect(resposta.statusCode).toBe(204);
+    });
+
+    test('deve retornar 404 quando a disciplina não existe', async () => {
+        const resposta = await requisicao(aplicacao)
+            .delete('/api/disciplinas/999');
+
+        expect(resposta.statusCode).toBe(404);
+        expect(resposta.body.mensagem).toBe('Disciplina não encontrada');
     });
 });
