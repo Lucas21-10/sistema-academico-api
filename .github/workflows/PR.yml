@@ -5,8 +5,7 @@ on:
     branches: [main]
 
 jobs:
-  qualidade:
-    name: Job de Qualidade
+  build:
     runs-on: ubuntu-latest
 
     steps:
