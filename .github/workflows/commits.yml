@@ -4,22 +4,25 @@ on:
   push:
 
 jobs:
-  testes:
+  qualidade:
+    name: Job de Qualidade
     runs-on: ubuntu-latest
+
     steps:
       - name: Clonar repositório
         uses: actions/checkout@v4
 
-      - name: Trocar para a branch do commit
-        run: git switch ${{ github.ref_name }}
-
-      - name: Instalar Node.js
+      - name: Configurar Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
-    
+          cache: 'npm'
+
       - name: Instalar dependências
         run: npm ci
-    
-      - name: Executar testes
+
+      - name: Verificação de Linter
+        run: npm run lint
+
+      - name: Executar testes e cobertura de código
         run: npm test

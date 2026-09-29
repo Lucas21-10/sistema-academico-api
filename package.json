@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --coverage",
+    "lint": "eslint .",
     "start": "node server.js"
   },
   "keywords": [],
@@ -23,6 +24,8 @@
   },
   "homepage": "https://github.com/Lucas21-10/sistema-academico-api#readme",
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.11.0",
     "jest": "^30.5.1",
     "supertest": "^7.2.2"
   }
