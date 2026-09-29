@@ -8,6 +8,22 @@ router.get('/disciplinas', (req, res) => {
     res.json(disciplinas);
 });
 
+router.post('/disciplinas', (req, res) => {
+    const { nome, codigo, cargaHoraria, periodo } = req.body;
+
+    const novaDisciplina = {
+        id: disciplinas.length + 1,
+        nome,
+        codigo,
+        cargaHoraria,
+        periodo
+    };
+
+    disciplinas.push(novaDisciplina);
+
+    return res.status(201).json(novaDisciplina);
+});
+
 router.delete('/disciplinas/:id', (req, res) => {
     const id = Number(req.params.id);
 
