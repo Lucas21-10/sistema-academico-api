@@ -19,9 +19,17 @@ jobs:
       - name: Configurar Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '24.15.0'
+          node-version: 20
           cache: 'npm'
 
       # 3. Instalar as dependências do projeto
       - name: Instalar dependências
         run: npm ci
+
+      # 4. Verificação de Linter
+      - name: Verificação de Linter
+        run: npm run lint
+
+      # 5. Executar testes e cobertura de código
+      - name: Executar testes e cobertura de código
+        run: npm test

@@ -13,6 +13,27 @@ describe('GET /api/disciplinas', () => {
     });
 });
 
+describe('POST /api/disciplinas', () => {
+    test('deve adicionar uma nova disciplina via /disciplinas', async () => {
+        const novaDisciplina = {
+            nome: 'Sistemas Operacionais',
+            codigo: 'SO',
+            cargaHoraria: 60,
+            periodo: 3
+        };
+
+        const resposta = await requisicao(aplicacao)
+            .post('/api/disciplinas')
+            .send(novaDisciplina);
+
+        expect(resposta.statusCode).toBe(201);
+        expect(resposta.body.nome).toBe('Sistemas Operacionais');
+        expect(resposta.body.codigo).toBe('SO');
+        expect(resposta.body.cargaHoraria).toBe(60);
+        expect(resposta.body.periodo).toBe(3);
+    });
+});
+
 describe('POST /api/adicionarDisciplina', () => {
     test('deve adicionar uma nova disciplina', async () => {
         const novaDisciplina = {
