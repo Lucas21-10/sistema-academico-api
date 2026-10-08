@@ -4,20 +4,22 @@ const disciplinas = require('../data/disciplinas');
 
 const router = express.Router();
 
-router.post('/adicionarDisciplina', (req, res) =>{
-    const {nome, codigo, cargaHoraria, periodo} = req.body;
+router.post('/adicionarDisciplina', (req, res) => {
+    const { nome, codigo, cargaHoraria, periodo } = req.body;
+
+    const novoId = Math.max(0, ...disciplinas.map(disciplina => disciplina.id)) + 1;
 
     const novaDisciplina = {
-        id: disciplinas.length + 1,
+        id: novoId,
         nome,
         codigo,
         cargaHoraria,
         periodo
     };
 
-    disciplinas.push(novaDisciplina)
+    disciplinas.push(novaDisciplina);
 
-    res.json(novaDisciplina)
-})
+    return res.status(200).json(novaDisciplina);
+});
 
 module.exports = router;

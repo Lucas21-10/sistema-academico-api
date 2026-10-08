@@ -9,6 +9,8 @@ jobs:
     steps:
       - name: Clonar repositório
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Trocar para a branch do commit
         run: git switch ${{ github.ref_name }}
@@ -26,3 +28,9 @@ jobs:
 
       - name: Executar testes e cobertura de código
         run: npm test
+
+      - name: SonarQube Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
