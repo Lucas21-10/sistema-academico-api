@@ -19,10 +19,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-    
+
       - name: Instalar dependências
         run: npm ci
-    
+
       - name: Verificação de Linter
         run: npm run lint
 
@@ -35,3 +35,46 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         continue-on-error: true
+
+  construir_imagem:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clonar repositório
+        uses: actions/checkout@v4
+
+      - name: Construir imagem Docker
+        run: docker build -t luc2110/sistema-academico-api:${{ github.sha }} .
+
+      - name: Exportar imagem Docker
+        run: docker save luc2110/sistema-academico-api:${{ github.sha }} -o imagem.tar
+
+      - name: Enviar imagem como artefato
+        uses: actions/upload-artifact@v4
+        with:
+          name: imagem-docker
+          path: imagem.tar
+          retention-days: 1
+
+  publicar_imagem:
+    if: github.ref == 'refs/heads/main'
+    needs: [testes, construir_imagem]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixar imagem construída
+        uses: actions/download-artifact@v4
+        with:
+          name: imagem-docker
+
+      - name: Carregar imagem Docker
+        run: docker load -i imagem.tar
+
+      - name: Entrar no Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Publicar imagem no Docker Hub
+        run: |
+          docker tag luc2110/sistema-academico-api:${{ github.sha }} luc2110/sistema-academico-api:latest
+          docker push luc2110/sistema-academico-api:latest

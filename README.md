@@ -21,3 +21,26 @@ O projeto está integrado ao **SonarQube** (versão gratuita oficial via SonarQu
 2. Executar linter com regras Sonar: `npm run lint`
 3. Executar o SonarScanner localmente: `npm run sonar` (ou configurando a variável `SONAR_TOKEN`)
 
+# Docker Hub
+
+A imagem Docker da API está hospedada publicamente no Docker Hub.
+
+**Repositório:** [sistema-academico-api](https://hub.docker.com/r/luc2110/sistema-academico-api)
+
+[![Docker Pulls](https://img.shields.io/docker/pulls/luc2110/sistema-academico-api?logo=docker)](https://hub.docker.com/r/luc2110/sistema-academico-api)
+
+## Executar a API com Docker
+
+Para baixar a imagem:
+
+```bash
+docker pull luc2110/sistema-academico-api:latest
+```
+
+Para executar o container:
+
+```bash
+docker run -p 8080:8080 luc2110/sistema-academico-api:latest
+```
+
+A API ficará disponível em http://localhost:8080.
