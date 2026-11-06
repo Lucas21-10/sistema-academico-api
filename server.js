@@ -14,8 +14,8 @@ app.use('/api', disciplinaRoutes);
 app.use('/api', adicionarDisciplina);
 
 if (require.main === module) {
-    app.listen(PORT, () => {
-        console.log(`Servidor rodando em http://localhost:${PORT}`);
+    app.listen(PORT, '0.0.0.0', () => {
+        console.log(`Servidor rodando na porta ${PORT}`);
     });
 }
 
