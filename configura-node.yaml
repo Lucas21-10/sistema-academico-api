@@ -1,0 +1,70 @@
+---
+- name: Configurar servidor e instalar a API do Sistema Academico na VM2
+  hosts: all
+  become: yes
+  vars:
+    repo_url: "https://github.com/Lucas21-10/sistema-academico-api.git"
+    app_dir: "/opt/sistema-academico"
+    node_major: "24"
+
+  tasks:
+    - name: Atualizar cache do apt e instalar pacotes basicos
+      apt:
+        update_cache: yes
+        name:
+          - curl
+          - ca-certificates
+          - gnupg
+          - git
+        state: present
+
+    - name: Configurar repositorio do Node.js (NodeSource)
+      shell: curl -fsSL https://deb.nodesource.com/setup_{{ node_major }}.x | bash -
+      args:
+        creates: /usr/bin/node
+
+    - name: Instalar Node.js e npm
+      apt:
+        update_cache: yes
+        name: nodejs
+        state: present
+
+    - name: Clonar o repositorio da aplicacao em VM2
+      git:
+        repo: "{{ repo_url }}"
+        dest: "{{ app_dir }}"
+        version: main
+        force: yes
+
+    - name: Instalar as dependencias de execucao da aplicacao
+      command: npm ci --omit=dev
+      args:
+        chdir: "{{ app_dir }}"
+
+    - name: Configurar servico systemd para execucao da API
+      copy:
+        dest: /etc/systemd/system/sistema-academico.service
+        mode: "0644"
+        content: |
+          [Unit]
+          Description=API do Sistema Academico
+          After=network.target
+
+          [Service]
+          Type=simple
+          User=root
+          WorkingDirectory=/opt/sistema-academico
+          ExecStart=/usr/bin/npm start
+          Restart=always
+          RestartSec=5
+          Environment=NODE_ENV=production
+
+          [Install]
+          WantedBy=multi-user.target
+
+    - name: Iniciar e habilitar o servico da API
+      systemd:
+        name: sistema-academico
+        daemon_reload: yes
+        state: restarted
+        enabled: yes
